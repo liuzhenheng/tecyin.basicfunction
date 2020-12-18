@@ -1,19 +1,23 @@
-package com.tecyin.basiclassify.pojo;
+package com.tecyin.basiclassify.pojo.basic.function;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+/**
+ * 功能分类 二级
+ */
 @Entity
 @Data
+@Table(name = "basic_function_class2")
 public class Basic_function_class2 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer basic_function_class2_id;
+    private int basic_function_class2_id;
+    @Column
     private String basic_function_class2_code;
+    @Column
     private String basic_function_class2_name;
+    @Column
     private int basic_function_class2_func_id;
 }

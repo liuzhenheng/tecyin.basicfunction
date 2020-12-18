@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能分类名称
@@ -57,7 +59,10 @@ public class Basic_functionController {
             @RequestParam(value = "basic_function_class2_name", defaultValue = "null") String basic_function_class2_name,
 //            13 增加basic_function_class3表的对象 公用9 ID
             @RequestParam(value = "basic_function_class3_code", defaultValue = "0") String basic_function_class3_code,
-            @RequestParam(value = "basic_function_class3_name", defaultValue = "null") String basic_function_class3_name
+            @RequestParam(value = "basic_function_class3_name", defaultValue = "null") String basic_function_class3_name,
+//            22 根据编码和名称查询basic_function表以及级下所有的对象
+            @RequestParam(value = "basic_code", defaultValue = "null") String basic_code,
+            @RequestParam(value = "basic_name", defaultValue = "null") String basic_name
     ) {
         ModelAndView m = null;
         if (type == 1) {
@@ -150,7 +155,7 @@ public class Basic_functionController {
         } else if (type == 19) {
 //          19 第一次请求查看basic_function_class2 表下级有没有数据，没有就删除
             m = new ModelAndView("forward:/function/deleteBasicFunClass2");
-            m.addObject("basic_function_class2_id",basic_function_class2_id);
+            m.addObject("basic_function_class2_id", basic_function_class2_id);
         } else if (type == 20) {
 //          20 确定删除Basic_function_class2下所有的数据
             m = new ModelAndView("forward:/function/delete2Sure");
@@ -159,6 +164,11 @@ public class Basic_functionController {
 //          21 根据id删除basic_function_class3表的数据
             m = new ModelAndView("forward:/function/deleteBasicFunClass3");
             m.addObject("basic_function_class3_id", basic_function_class3_id);
+        } else if (type == 22) {
+//          22 根据编码和名称查询Basic_function 表级下所有的用户
+            m = new ModelAndView("forward:/function/findFuncCodeName");
+            m.addObject("basic_code", basic_code);
+            m.addObject("basic_name", basic_name);
         }
         return m;
     }
@@ -648,10 +658,49 @@ public class Basic_functionController {
                     }
                 }
             } else {
-                        result = new Result(ResultCode.SUCCESS);
+                result = new Result(ResultCode.SUCCESS);
             }
         } catch (Exception e) {
             result = new Result(ResultCode.FAIL);
+        }
+        return result;
+    }
+
+    /**
+     * 22 根据编码和名称查询Basic_function 表级下所有的用户
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/findFuncCodeName")
+    public Result findFuncCodeName(
+            @RequestParam(value = "basic_code", defaultValue = "null") String code,
+            @RequestParam(value = "basic_name", defaultValue = "null") String name
+    ) {
+        Result result = null;
+        Map<String, Object> map = new HashMap<>();
+        //先根据一级表查询，查到了就返回，没查到就去二级表查询，
+        List<Basic_function> codeAndName = basic_functionRepository.findCodeAndName(code, name);
+        if (codeAndName.size() != 0) {
+            map.put("codeAndName", codeAndName);
+            map.put("basic_lv", "1");
+            result = new Result(ResultCode.SUCCESS, map);
+        } else {
+            List<Basic_function_class2> class2CodeAndName = basic_function_class2Repository.findClass2CodeAndName(code, name);
+            if (class2CodeAndName.size() != 0) {
+                map.put("class2CodeAndName", class2CodeAndName);
+                map.put("basic_lv", "2");
+                result = new Result(ResultCode.SUCCESS, map);
+            } else {
+                List<Basic_function_class3> class3CodeAndName = basic_function_class3Repository.findClass3CodeAndName(code, name);
+                if (class3CodeAndName.size() != 0) {
+                    map.put("class3CodeAndName", class3CodeAndName);
+                    map.put("basic_lv", "3");
+                    result = new Result(ResultCode.SUCCESS, map);
+                } else {
+                    result = new Result(ResultCode.FAIL);
+                }
+            }
         }
         return result;
     }

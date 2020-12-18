@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 扶贫标识名称
@@ -60,83 +62,86 @@ public class Basic_poorController {
             @RequestParam(value = "basic_function_class2_name", defaultValue = "null") String basic_function_class2_name,
 //            13 增加basic_function_class3表的对象 公用9 ID
             @RequestParam(value = "basic_function_class3_code", defaultValue = "0") String basic_function_class3_code,
-            @RequestParam(value = "basic_function_class3_name", defaultValue = "null") String basic_function_class3_name
+            @RequestParam(value = "basic_function_class3_name", defaultValue = "null") String basic_function_class3_name,
+//            22 根据编码和名称查询basic_function表以及级下所有的对象
+            @RequestParam(value = "basic_code", defaultValue = "null") String basic_code,
+            @RequestParam(value = "basic_name", defaultValue = "null") String basic_name
     ) {
         ModelAndView m = null;
         if (type == 1) {
 //            1 根据id查询Basic_function表
-            m = new ModelAndView("forward:/function/findOneBasicFunc");
+            m = new ModelAndView("forward:/poor/findOneBasicFunc");
             m.addObject("basic_function_id", basic_function_id);
         } else if (type == 2) {
 //            2 分页查询Basic_function表
-            m = new ModelAndView("forward:/function/findPage");
+            m = new ModelAndView("forward:/poor/findPage");
             m.addObject("page", page);
             m.addObject("limit", limit);
         } else if (type == 3) {
 //            3 根据外键查询Basic_function 表
-            m = new ModelAndView("forward:/function/findBasicFuncDataId");
+            m = new ModelAndView("forward:/poor/findBasicFuncDataId");
             m.addObject("findBasicFuncDataId", findBasicFuncDataId);
         } else if (type == 4) {
 //            4 查询Basic_function 表的所有
-            m = new ModelAndView("forward:/function/findBasicFunctionAll");
+            m = new ModelAndView("forward:/poor/findBasicFunctionAll");
         } else if (type == 5) {
 //            5 根据ID查询Basic_function_class2 表
-            m = new ModelAndView("forward:/function/findOneBasicFuncCla2");
+            m = new ModelAndView("forward:/poor/findOneBasicFuncCla2");
             m.addObject("basic_function_class2_id", basic_function_class2_id);
         } else if (type == 6) {
 //            6 根据外键查询Basic_function_class2 表外键
-            m = new ModelAndView("forward:/function/findBasicFuncCla2FuncId");
+            m = new ModelAndView("forward:/poor/findBasicFuncCla2FuncId");
             m.addObject("basic_function_class2_func_id", basic_function_class2_func_id);
         } else if (type == 7) {
 //            7 查询Basic_function_class2表的所有 findBasicFuncClass2All
-            m = new ModelAndView("forward:/function/findBasicFuncClass2All");
+            m = new ModelAndView("forward:/poor/findBasicFuncClass2All");
 
         } else if (type == 8) {
 //            8 根据ID查询Basic_function_class3 表
-            m = new ModelAndView("forward:/function/findOneBasicFuncCla3");
+            m = new ModelAndView("forward:/poor/findOneBasicFuncCla3");
             m.addObject("basic_function_class3_id", basic_function_class3_id);
         } else if (type == 9) {
 //            9 根据外键查询Basic_function_class3 表
-            m = new ModelAndView("forward:/function/findBasicFuncCla3FuncId");
+            m = new ModelAndView("forward:/poor/findBasicFuncCla3FuncId");
             m.addObject("basic_function_class3_func2_id", basic_function_class3_func2_id);
         } else if (type == 10) {
 //            10 查询Basic_function_class3表的所有
-            m = new ModelAndView("forward:/function/findBasicFuncClass3All");
+            m = new ModelAndView("forward:/poor/findBasicFuncClass3All");
         } else if (type == 11) {
 //            11 增加Basic_function表的对象
-            m = new ModelAndView("forward:/function/addBasicFunc");
+            m = new ModelAndView("forward:/poor/addBasicFunc");
             m.addObject("basic_function_code", basic_function_code);
             m.addObject("basic_function_name", basic_function_name);
             m.addObject("basic_function_data_id", basic_function_data_id);
         } else if (type == 12) {
 //            12 增加basic_function_class2表的对象
-            m = new ModelAndView("forward:/function/addBasicFuncCla2");
+            m = new ModelAndView("forward:/poor/addBasicFuncCla2");
             m.addObject("basic_function_class2_code", basic_function_class2_code);
             m.addObject("basic_function_class2_name", basic_function_class2_name);
             m.addObject("basic_function_class2_func_id", basic_function_class2_func_id);
         } else if (type == 13) {
 //            13 增加basic_function_class3表的对象
-            m = new ModelAndView("forward:/function/addBasicFuncCla3");
+            m = new ModelAndView("forward:/poor/addBasicFuncCla3");
             m.addObject("basic_function_class3_code", basic_function_class3_code);
             m.addObject("basic_function_class3_name", basic_function_class3_name);
             m.addObject("basic_function_class3_func2_id", basic_function_class3_func2_id);
         } else if (type == 14) {
 //            14 修改Basic_function表的数据
-            m = new ModelAndView("forward:/function/updateBasicFunc");
+            m = new ModelAndView("forward:/poor/updateBasicFunc");
             m.addObject("basic_function_id", basic_function_id);
             m.addObject("basic_function_code", basic_function_code);
             m.addObject("basic_function_name", basic_function_name);
             m.addObject("basic_function_data_id", basic_function_data_id);
         } else if (type == 15) {
 //            15 修改basic_function_class2表的数据
-            m = new ModelAndView("forward:/function/updateBasicFunClass2");
+            m = new ModelAndView("forward:/poor/updateBasicFunClass2");
             m.addObject("basic_function_class2_id", basic_function_class2_id);
             m.addObject("basic_function_class2_code", basic_function_class2_code);
             m.addObject("basic_function_class2_name", basic_function_class2_name);
             m.addObject("basic_function_class2_func_id", basic_function_class2_func_id);
         } else if (type == 16) {
 //          16 修改basic_function_class3表的数据
-            m = new ModelAndView("forward:/function/updateBasicFunClass3");
+            m = new ModelAndView("forward:/poor/updateBasicFunClass3");
             m.addObject("basic_function_class3_id", basic_function_class3_id);
             m.addObject("basic_function_class3_code", basic_function_class3_code);
             m.addObject("basic_function_class3_name", basic_function_class3_name);
@@ -144,24 +149,29 @@ public class Basic_poorController {
 
         } else if (type == 17) {
 //          17 第一次请求查看 Basic_function 表下级有没有数据，没有就删除
-            m = new ModelAndView("forward:/function/deleteFunSure");
+            m = new ModelAndView("forward:/poor/deleteFunSure");
             m.addObject("basic_function_id", basic_function_id);
         } else if (type == 18) {
 //          18 删除 basic_function 表级下所有的数据
-            m = new ModelAndView("forward:/function/deleteBasicFunc");
+            m = new ModelAndView("forward:/poor/deleteBasicFunc");
             m.addObject("basic_function_id", basic_function_id);
         } else if (type == 19) {
 //          19 第一次请求查看basic_function_class2 表下级有没有数据，没有就删除
-            m = new ModelAndView("forward:/function/deleteBasicFunClass2");
-            m.addObject("basic_function_class2_id",basic_function_class2_id);
+            m = new ModelAndView("forward:/poor/deleteBasicFunClass2");
+            m.addObject("basic_function_class2_id", basic_function_class2_id);
         } else if (type == 20) {
 //          20 确定删除Basic_function_class2下所有的数据
-            m = new ModelAndView("forward:/function/delete2Sure");
+            m = new ModelAndView("forward:/poor/delete2Sure");
             m.addObject("basic_function_class2_id", basic_function_class2_id);
         } else if (type == 21) {
 //          21 根据id删除basic_function_class3表的数据
-            m = new ModelAndView("forward:/function/deleteBasicFunClass3");
+            m = new ModelAndView("forward:/poor/deleteBasicFunClass3");
             m.addObject("basic_function_class3_id", basic_function_class3_id);
+        } else if (type == 22) {
+//          22 根据编码和名称查询Basic_function 表级下所有的用户
+            m = new ModelAndView("forward:/poor/findFuncCodeName");
+            m.addObject("basic_code", basic_code);
+            m.addObject("basic_name", basic_name);
         }
         return m;
     }
@@ -651,10 +661,49 @@ public class Basic_poorController {
                     }
                 }
             } else {
-                        result = new Result(ResultCode.SUCCESS);
+                result = new Result(ResultCode.SUCCESS);
             }
         } catch (Exception e) {
             result = new Result(ResultCode.FAIL);
+        }
+        return result;
+    }
+
+    /**
+     * 22 根据编码和名称查询Basic_function 表级下所有的用户
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/findFuncCodeName")
+    public Result findFuncCodeName(
+            @RequestParam(value = "basic_code", defaultValue = "null") String code,
+            @RequestParam(value = "basic_name", defaultValue = "null") String name
+    ) {
+        Result result = null;
+        Map<String, Object> map = new HashMap<>();
+        //先根据一级表查询，查到了就返回，没查到就去二级表查询，
+        List<Basic_poor> codeAndName = br1.findCodeAndName(code, name);
+        if (codeAndName.size() != 0) {
+            map.put("codeAndName", codeAndName);
+            map.put("basic_lv", "1");
+            result = new Result(ResultCode.SUCCESS, map);
+        } else {
+            List<Basic_poor_class2> class2CodeAndName = br2.findClass2CodeAndName(code, name);
+            if (class2CodeAndName.size() != 0) {
+                map.put("class2CodeAndName", class2CodeAndName);
+                map.put("basic_lv", "2");
+                result = new Result(ResultCode.SUCCESS, map);
+            } else {
+                List<Basic_poor_class3> class3CodeAndName = br3.findClass3CodeAndName(code, name);
+                if (class3CodeAndName.size() != 0) {
+                    map.put("class3CodeAndName", class3CodeAndName);
+                    map.put("basic_lv", "3");
+                    result = new Result(ResultCode.SUCCESS, map);
+                } else {
+                    result = new Result(ResultCode.FAIL);
+                }
+            }
         }
         return result;
     }
